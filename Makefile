@@ -4,3 +4,5 @@ main:
 custom:
 	g++ -std=c++0x $(file) && ./a.out
 
+temp:
+	cp ./template.cpp $(to)
