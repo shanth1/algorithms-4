@@ -25,16 +25,42 @@
 #include "algorithm"
 #include "iostream"
 #include "vector"
+#include <cmath>
+#include <iomanip>
 using namespace std;
 
-float getAngle(int a_x, int a_y, int b_x, int b_y) { return 0; }
+long double getAngle(int x1, int y1, int x2, int y2) {
+  return abs(atan2(y1, x1) - atan2(y2, x2));
+}
 
-int getPathLength(int a_x, int a_y, int b_x, int b_y) {
-  if (a_x == b_y && a_y == b_y) {
+long double getPathLength(long long a_x, long long a_y, long long b_x,
+                          long long b_y) {
+  long double r1 = sqrt((long double)a_x * a_x + a_y * a_y);
+  long double r2 = sqrt((long double)b_x * b_x + b_y * b_y);
+
+  if (a_x == b_x && a_y == b_y) {
     return 0;
   }
+  long double angle = getAngle(a_x, a_y, b_x, b_y);
+  if (angle == M_PI) {
+    return r1 + r2;
+  }
+  if (angle == 0) {
+    return abs(r2 - r1);
+  }
+  long double len1 = r1 + r2;
+  long double len2;
 
-  return 0;
+  if (r1 < r2) {
+    len2 = r1 * angle + (r2 - r1);
+  } else {
+    len2 = r2 * angle + (r1 - r2);
+  }
+
+  if (len1 < len2) {
+    return len1;
+  }
+  return len2;
 }
 
 int main(int argc, char *argv[]) {
@@ -42,6 +68,6 @@ int main(int argc, char *argv[]) {
 
   cin >> a_x >> a_y >> b_x >> b_y;
 
-  cout << getPathLength(a_x, a_y, b_x, b_y);
+  cout << setprecision(13) << getPathLength(a_x, a_y, b_x, b_y);
   return 0;
 }
